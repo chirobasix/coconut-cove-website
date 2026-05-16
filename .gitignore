@@ -1,0 +1,21 @@
+# Local design source bundle (don't ship the .gz/raw design files to the live site)
+_design_source/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Dependencies (none required, but reserved)
+node_modules/
+
+# Logs
+*.log
+
+# Env
+.env
+.env.local

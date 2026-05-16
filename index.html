@@ -16,18 +16,18 @@
 <meta property="og:title" content="Coconut Cove — Seafood, Cocktails & Live Music in Surf City, NC">
 <meta property="og:description" content="Waterfront seafood restaurant in Surf City, NC. Fresh local catch, frozen painkillers, dock seating, live music every weekend. Open 11am–11pm daily.">
 <meta property="og:url" content="https://coconutcovesurfcity.com/">
-<meta property="og:image" content="https://coconutcovesurfcity.com/assets/photos/sign-exterior.jpg">
+<meta property="og:image" content="https://coconutcovesurfcity.com/assets/photos/og-coconut-cove.jpg">
 <meta property="og:locale" content="en_US">
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Coconut Cove — Surf City, NC">
 <meta name="twitter:description" content="Waterfront seafood + live music on Roland Ave, Surf City. Open every day, 11–11.">
-<meta name="twitter:image" content="https://coconutcovesurfcity.com/assets/photos/sign-exterior.jpg">
+<meta name="twitter:image" content="https://coconutcovesurfcity.com/assets/photos/og-coconut-cove.jpg">
 
 <!-- Favicon -->
-<link rel="icon" type="image/png" href="assets/images/logo-mark.png">
-<link rel="apple-touch-icon" href="assets/images/logo-mark.png">
+<link rel="icon" type="image/png" href="assets/images/favicon-192.png">
+<link rel="apple-touch-icon" href="assets/images/favicon-192.png">
 
 <!-- Performance: preload critical fonts -->
 <link rel="preload" href="assets/fonts/WarungKopi-Bold.otf" as="font" type="font/otf" crossorigin>
@@ -36,7 +36,8 @@
 <!-- Google Fonts (body) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"></noscript>
 
 <link rel="stylesheet" href="assets/css/styles.css">
 
@@ -48,10 +49,10 @@
   "@id": "https://coconutcovesurfcity.com/#restaurant",
   "name": "Coconut Cove",
   "image": [
-    "https://coconutcovesurfcity.com/assets/photos/sign-exterior.jpg",
+    "https://coconutcovesurfcity.com/assets/photos/og-coconut-cove.jpg",
     "https://coconutcovesurfcity.com/assets/photos/building-wide.webp"
   ],
-  "logo": "https://coconutcovesurfcity.com/assets/images/logo-mark.png",
+  "logo": "https://coconutcovesurfcity.com/assets/images/favicon-192.png",
   "url": "https://coconutcovesurfcity.com/",
   "telephone": "+1-910-752-6780",
   "email": "coconutcovesurfcity@gmail.com",
@@ -107,7 +108,7 @@
      ============================================================ -->
 <header class="cc-header" role="banner">
   <a href="index.html" class="cc-header__logo" aria-label="Coconut Cove — Home">
-    <img src="assets/images/logo-surf-city.png" alt="Coconut Cove logo" width="118" height="56">
+    <img src="assets/images/logo-surf-city.webp" alt="Coconut Cove logo" width="118" height="56">
   </a>
 
   <button class="cc-nav-toggle" type="button"
@@ -139,7 +140,7 @@
     </div>
 
     <h1 id="hero-name" class="home-hero__logo">
-      <img src="assets/images/logo-horizontal.png"
+      <img src="assets/images/logo-horizontal.webp"
            alt="Coconut Cove — Surf City, NC"
            width="980" height="240"
            fetchpriority="high">
@@ -151,19 +152,19 @@
 
     <div class="collage" aria-label="Polaroid photo collage of Coconut Cove">
       <figure class="polaroid polaroid--1">
-        <div class="polaroid__photo" style="background-image: url('assets/photos/sign-exterior.jpg')" role="img" aria-label="Coconut Cove front porch and sign"></div>
+        <div class="polaroid__photo" style="background-image: url('assets/photos/sign-exterior.webp')" role="img" aria-label="Coconut Cove front porch and sign"></div>
         <figcaption class="polaroid__caption">our porch</figcaption>
       </figure>
       <figure class="polaroid polaroid--2">
-        <div class="polaroid__photo" style="background-image: url('assets/photos/bucket-pink.jpg')" role="img" aria-label="Pink merch bucket"></div>
+        <div class="polaroid__photo" style="background-image: url('assets/photos/bucket-pink.webp')" role="img" aria-label="Pink merch bucket"></div>
         <figcaption class="polaroid__caption">the bucket</figcaption>
       </figure>
       <figure class="polaroid polaroid--3">
-        <div class="polaroid__photo" style="background-image: url('assets/photos/hat-teal.jpg')" role="img" aria-label="Teal Coconut Cove hat"></div>
+        <div class="polaroid__photo" style="background-image: url('assets/photos/hat-teal.webp')" role="img" aria-label="Teal Coconut Cove hat"></div>
         <figcaption class="polaroid__caption">merch drop</figcaption>
       </figure>
       <figure class="polaroid polaroid--4">
-        <div class="polaroid__photo" style="background-image: url('assets/photos/hats-row.jpg')" role="img" aria-label="Row of Coconut Cove hats in every color"></div>
+        <div class="polaroid__photo" style="background-image: url('assets/photos/hats-row.webp')" role="img" aria-label="Row of Coconut Cove hats in every color"></div>
         <figcaption class="polaroid__caption">all colors</figcaption>
       </figure>
       <figure class="polaroid polaroid--5">
@@ -369,7 +370,7 @@
      ============================================================ -->
 <footer class="cc-footer" role="contentinfo">
   <div class="cc-footer__top">
-    <img src="assets/images/logo-surf-city.png" alt="" class="cc-footer__logo" width="160" height="96" loading="lazy">
+    <img src="assets/images/logo-surf-city.webp" alt="" class="cc-footer__logo" width="160" height="96" loading="lazy">
     <p class="cc-footer__tag">Chill. Sip. Savor. — Surf City, NC</p>
     <div class="cc-footer__social">
       <a href="https://www.instagram.com/coconutcovesurfcity" aria-label="Coconut Cove on Instagram" rel="noopener" target="_blank">
@@ -395,14 +396,14 @@
 <div id="reserve-modal" class="cc-modal" role="dialog" aria-modal="true" aria-hidden="true"
      aria-labelledby="reserve-modal-title">
   <div class="cc-modal__panel" role="document">
-    <img src="assets/images/coconut-drink-pink.png" alt="" class="cc-modal__bg-drink" aria-hidden="true">
+    <img src="assets/images/coconut-drink-pink.webp" alt="" class="cc-modal__bg-drink" aria-hidden="true" width="500" height="595" loading="lazy">
     <button type="button" class="cc-modal__close" aria-label="Close reservation dialog" data-close-reserve>
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
         <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
       </svg>
     </button>
     <div style="position: relative;">
-      <img src="assets/images/coconut-drink-teal.png" alt="" class="cc-modal__drink-icon" aria-hidden="true">
+      <img src="assets/images/coconut-drink-teal.webp" alt="" class="cc-modal__drink-icon" aria-hidden="true" width="500" height="596" loading="lazy">
       <span class="cc-modal__chip">Reservations</span>
       <h2 id="reserve-modal-title" class="cc-heading cc-modal__heading">Coming<br>soon.</h2>
       <p class="cc-script cc-modal__tagline">save us a seat for now</p>

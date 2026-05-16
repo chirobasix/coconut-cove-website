@@ -318,7 +318,7 @@
     var dow = ev.startAt.toLocaleDateString('en-US', { weekday: 'long' });
     upNextEl.innerHTML =
       '<div class="up-next__card">' +
-        '<img src="assets/images/coconut-drink-pink.png" alt="" class="up-next__bg-drink" aria-hidden="true" loading="lazy">' +
+        '<img src="assets/images/coconut-drink-pink.webp" alt="" class="up-next__bg-drink" aria-hidden="true" loading="lazy">' +
         '<div class="up-next__date-circle">' +
           '<span class="up-next__dow">' + dow.slice(0,3).toLowerCase() + '</span>' +
           '<span class="up-next__day-num">' + ev.startAt.getDate() + '</span>' +

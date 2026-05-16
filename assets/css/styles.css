@@ -1406,13 +1406,20 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   .home-hero__tagline::after { display: none; }
 
   /* ---------- Polaroid collage ---------- */
-  .collage { gap: 12px; max-width: 100%; }
+  /* The rotated polaroids were extending past the viewport on
+     phones — even small rotations push the bounding box outside
+     the grid cell. Drop rotation to zero on mobile, tighten the
+     gap, and clip any straggler at the collage edge. */
+  .collage {
+    gap: 12px;
+    max-width: 100%;
+    overflow-x: clip;
+    padding: 0 2px;
+  }
   .polaroid { padding: 8px 8px 12px; }
-  .polaroid:nth-child(odd)  { transform: rotate(-2deg) !important; }
-  .polaroid:nth-child(even) { transform: rotate(2deg)  !important; }
+  .polaroid:nth-child(odd),
+  .polaroid:nth-child(even) { transform: none !important; }
   .polaroid__caption { font-size: 17px; margin-top: 6px; }
-  /* Soften rotation at very narrow widths so polaroids don't
-     visually clip outside the column. */
 
   /* ---------- Home CTAs ---------- */
   .home-hero__ctas { flex-direction: column; gap: 12px; padding: 0 4px; }

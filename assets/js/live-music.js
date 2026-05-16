@@ -371,7 +371,8 @@
       groups[k].events.push(e);
     });
 
-    var html = '<div class="upcoming__head">' +
+    var html = '<div class="upcoming__inner">' +
+      '<div class="upcoming__head">' +
       '<p class="cc-eyebrow">The whole lineup</p>' +
       '<h2 class="cc-heading upcoming__heading cc-size-80">What\'s coming.</h2>' +
       '<p class="cc-script cc-size-36" style="margin-top: 8px;">' +
@@ -415,6 +416,7 @@
       '</div>';
     }
 
+    html += '</div>';
     upcomingEl.innerHTML = html;
 
     var loadMore = upcomingEl.querySelector('[data-load-more]');

@@ -175,7 +175,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
 
 /* ---------- Eyebrow with dots ---------- */
 .cc-eyebrow-dots {
-  display: inline-flex; align-items: center; justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   gap: 14px; color: var(--cc-gray);
 }
 .cc-eyebrow-dots::before, .cc-eyebrow-dots::after {

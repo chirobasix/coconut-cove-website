@@ -213,7 +213,15 @@
         </div>
       </div>
 
-      <form class="contact-form" id="contact-form" action="mailto:coconutcovesurfcity@gmail.com" method="post" enctype="text/plain">
+      <form class="contact-form" id="contact-form"
+            action="https://api.web3forms.com/submit" method="POST">
+        <!-- Web3Forms config — see README -->
+        <input type="hidden" name="access_key" value="74f853da-bea8-44dc-b361-935f8f56c8bd">
+        <input type="hidden" name="from_name" value="Coconut Cove Website">
+        <input type="hidden" name="subject" value="New Coconut Cove contact form submission">
+        <!-- Honeypot: real users never see/fill this; bots usually do -->
+        <input type="checkbox" name="botcheck" class="cc-sr-only" tabindex="-1" autocomplete="off">
+
         <div class="contact-form__row">
           <label>
             <span>Your name ·</span>
@@ -247,8 +255,8 @@
         </label>
         <div class="contact-form__foot">
           <p class="contact-form__note">Goes straight to <strong>coconutcovesurfcity@gmail.com</strong>. We don't share your info.</p>
-          <button type="submit" class="cc-btn cc-btn--pink cc-btn--lg">
-            Send message
+          <button type="submit" class="cc-btn cc-btn--pink cc-btn--lg" data-submit>
+            <span data-submit-label>Send message</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </button>
         </div>

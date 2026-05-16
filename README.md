@@ -112,11 +112,26 @@ The page will automatically prefer the direct API path once the key is set.
 
 ### Contact form
 
-The form on the Visit page opens the visitor's email client pre-filled
-(no server-side setup required). If you want silent submission with a
-"thanks" confirmation, sign up at <https://formspree.io> or
-<https://web3forms.com>, create an endpoint pointing at
-`coconutcovesurfcity@gmail.com`, and we can wire it up in a follow-up.
+The form on the Visit page submits to **[Web3Forms](https://web3forms.com)**,
+which forwards each submission to `coconutcovesurfcity@gmail.com`.
+
+- **Access key** is hard-coded in `visit.html` as a hidden `<input>`.
+  Web3Forms keys are designed to be public — they only authorize *which
+  inbox* receives the message; they can't be used to read anything.
+- **Honeypot** field (`name="botcheck"`) is included to block basic
+  spam bots. Real users never see it.
+- **mailto: fallback** — if the network call to Web3Forms fails for any
+  reason, the form falls back to opening the visitor's email client
+  pre-filled, so the message still reaches us.
+- **Free tier** is 250 submissions/month. Upgrade at
+  <https://web3forms.com> if needed.
+
+To swap the key (e.g. if you rotate it), edit one line at the top of
+the form in `visit.html`:
+
+```html
+<input type="hidden" name="access_key" value="YOUR-KEY-HERE">
+```
 
 ## File map
 

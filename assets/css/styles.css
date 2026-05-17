@@ -1406,19 +1406,28 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   .home-hero__tagline::after { display: none; }
 
   /* ---------- Polaroid collage ---------- */
-  /* The rotated polaroids were extending past the viewport on
-     phones — even small rotations push the bounding box outside
-     the grid cell. Drop rotation to zero on mobile, tighten the
-     gap, and clip any straggler at the collage edge. */
+  /* The 1fr-based grid let cells fill the section, which left no
+     room for rotation to extend past the cell edge — polaroids
+     ended up hanging off the viewport. Switch to fixed-width
+     columns capped via minmax(0, X) and center them inside the
+     section. This caps each polaroid's total visual width
+     (including the rotation extent) below the section's
+     available width with a comfortable margin. overflow: hidden
+     is the safety net so any extreme zoom can't leak out. */
   .collage {
-    gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, 160px));
+    gap: 14px;
     max-width: 100%;
-    overflow-x: clip;
-    padding: 0 2px;
+    justify-content: center;
+    padding: 12px 0;
+    overflow: hidden;
   }
-  .polaroid { padding: 8px 8px 12px; }
-  .polaroid:nth-child(odd),
-  .polaroid:nth-child(even) { transform: none !important; }
+  .polaroid {
+    width: 100% !important;
+    padding: 8px 8px 12px;
+  }
+  .polaroid:nth-child(odd)  { transform: rotate(-2deg) !important; }
+  .polaroid:nth-child(even) { transform: rotate(2deg)  !important; }
   .polaroid__caption { font-size: 17px; margin-top: 6px; }
 
   /* ---------- Home CTAs ---------- */
@@ -1532,6 +1541,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visib
   .lm-hero__heading { font-size: clamp(44px, 18vw, 160px) !important; }
   .cc-header__logo img { height: 38px; }
   .cc-modal__heading { font-size: 48px; }
+  /* Shrink polaroids further so two-up with tilt still fits */
+  .collage { grid-template-columns: repeat(2, minmax(0, 130px)); gap: 12px; }
+  .polaroid__caption { font-size: 15px; }
 }
 
 /* ============================================================

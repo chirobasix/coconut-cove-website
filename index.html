@@ -32,13 +32,9 @@
 <!-- Performance: preload critical fonts -->
 <link rel="preload" href="assets/fonts/WarungKopi-Bold.otf" as="font" type="font/otf" crossorigin>
 <link rel="preload" href="assets/fonts/SundayApril.otf" as="font" type="font/otf" crossorigin>
+<link rel="preload" href="assets/fonts/montserrat-var.woff2" as="font" type="font/woff2" crossorigin>
 
 <!-- Google Fonts (body) -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"></noscript>
-
 <link rel="stylesheet" href="assets/css/styles.css">
 
 <!-- Schema.org Restaurant / LocalBusiness -->
@@ -140,7 +136,10 @@
     </div>
 
     <h1 id="hero-name" class="home-hero__logo">
-      <img src="assets/images/logo-horizontal.webp"
+      <img src="assets/images/logo-horizontal-800.webp"
+           srcset="assets/images/logo-horizontal-800.webp 800w,
+                   assets/images/logo-horizontal.webp 1400w"
+           sizes="(max-width: 600px) 92vw, min(980px, 90vw)"
            alt="Coconut Cove — Surf City, NC"
            width="980" height="240"
            fetchpriority="high">

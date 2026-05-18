@@ -2,8 +2,8 @@
 
 Pure HTML + CSS website for **Coconut Cove**, a waterfront seafood restaurant
 in Surf City, NC. Built for maximum speed (zero frameworks, zero build step)
-with a small amount of vanilla JS for the reserve modal, mobile menu, menu
-toggle, contact form, and live music calendar sync.
+with a small amount of vanilla JS for the mobile menu, lunch/dinner toggle,
+contact form, and live music calendar sync.
 
 ```
 418 Roland Ave · Surf City, NC 28445 · (910) 752-6780

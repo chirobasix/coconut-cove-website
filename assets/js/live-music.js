@@ -36,7 +36,7 @@
   var DEMO_EVENTS = [
     { title: 'Sam Holloway',           date: '2026-06-12', start: '18:30', end: '21:00', genre: 'Solo · acoustic',     description: 'Originals + low-key covers. Sit dockside, order the painkiller.' },
     { title: 'The Tar Heel Trio',      date: '2026-06-13', start: '19:30', end: '22:30', genre: 'Country soul',        description: 'A Coconut Cove regular. Three pieces, two encores, one really good fiddle.' },
-    { title: 'Ocean Drive Band',       date: '2026-06-14', start: '20:00', end: '23:00', genre: 'Beach funk',          description: 'Six-piece beach band straight off the strip. Dancing on the deck encouraged.' },
+    { title: 'Ocean Drive Band',       date: '2026-06-14', start: '20:00', end: '23:00', genre: 'Beach funk',          description: 'Six-piece beach band straight off the strip. Dancing on the Lanai encouraged.' },
     { title: 'Brunch with Cole',       date: '2026-06-15', start: '11:00', end: '13:30', genre: 'Jazz piano',          description: 'Sunday brunch on the dock. Cole takes requests after his second espresso.' },
     { title: 'Mary Allen & The Sailors', date: '2026-06-20', start: '19:30', end: '22:00', genre: 'Folk · songwriter', description: 'New songs from Mary\'s upcoming record. Quiet show — bring someone you like.' },
     { title: 'Big Carolina Brass',     date: '2026-06-21', start: '19:00', end: '22:00', genre: 'Brass band · funk',   description: 'Eight horns, two drums, no chill. Loudest show of the season.' },
@@ -110,13 +110,19 @@
       else body.push(lines[i]);
     }
     if (!genre && ev.categories && ev.categories.length) genre = ev.categories.join(' · ');
-    if (!genre) genre = 'Live on the deck';
+    if (!genre) genre = 'Live on the Lanai';
     return Object.assign({}, ev, { genre: genre, description: body.join(' ').trim() });
   }
 
   function icsToEvents(text) {
     return parseIcs(text)
-      .filter(function (e) { return e.startAt && e.title; })
+      .filter(function (e) {
+        if (!e.startAt || !e.title) return false;
+        // Google Calendar shows private events as "Busy" in the public iCal feed.
+        var t = e.title.trim().toLowerCase();
+        if (t === 'busy' || t === 'private' || t === 'private event') return false;
+        return true;
+      })
       .map(function (e) {
         var startAt = e.startAt;
         var endAt = e.endAt || new Date(startAt.getTime() + 2 * 60 * 60 * 1000);
@@ -161,18 +167,22 @@
       .then(function (r) { if (!r.ok) throw new Error('Calendar API HTTP ' + r.status); return r.json(); })
       .then(function (json) {
         return (json.items || []).map(function (it) {
+          // Filter "Busy"/private events from the API path too
+          if (!it.summary) return null;
+          var t = it.summary.trim().toLowerCase();
+          if (t === 'busy' || t === 'private' || t === 'private event') return null;
           var startAt = new Date(it.start.dateTime || it.start.date);
           var endAt = new Date((it.end && (it.end.dateTime || it.end.date)) || startAt.getTime() + 2*60*60*1000);
           return enrichGenre({
             id: it.id,
-            title: it.summary || 'Live music',
+            title: it.summary,
             startAt: startAt, endAt: endAt,
             date:  isoDate(startAt),
             start: pad2(startAt.getHours()) + ':' + pad2(startAt.getMinutes()),
             end:   pad2(endAt.getHours())   + ':' + pad2(endAt.getMinutes()),
             description: it.description
           });
-        }).sort(function (a, b) { return a.startAt - b.startAt; });
+        }).filter(Boolean).sort(function (a, b) { return a.startAt - b.startAt; });
       });
   }
 

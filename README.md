@@ -7,7 +7,7 @@ contact form, and live music calendar sync.
 
 ```
 418 Roland Ave · Surf City, NC 28445 · (910) 752-6780
-coconutcovesurfcity@gmail.com · Open 11am–11pm daily
+coconutcovesurfcity@gmail.com · Bar 11am–11pm daily · Kitchen until 9pm
 ```
 
 ## Pages

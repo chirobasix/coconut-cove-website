@@ -105,10 +105,10 @@ All the data logic lives in one shared file: **`assets/js/calendar-data.js`**
 
 1. **Fresh browser cache** (`localStorage`, < 12h old) → renders instantly,
    then quietly refreshes in the background for next time.
-2. **`/api/events`** — a Cloudflare Pages Function
-   (`functions/api/events.js`) that fetches Google's `.ics` feed
-   **server-side** (no CORS problem) and caches it at Cloudflare's edge for
-   **12 hours**. This is the primary, reliable path.
+2. **`/api/events`** — the Worker endpoint (`worker/index.js` →
+   `worker/events-core.js`) that fetches Google's `.ics` feed **server-side**
+   (no CORS problem) and caches it at Cloudflare's edge for **12 hours**.
+   This is the primary, reliable path.
 3. **Public CORS proxies** — legacy fallback. Still **real** data, only used
    if `/api/events` is somehow unreachable.
 4. **Stale browser cache** (any age) → last-known-good real events if the
@@ -119,27 +119,38 @@ All the data logic lives in one shared file: **`assets/js/calendar-data.js`**
 Private calendar entries (which Google exposes as `Busy` in the public feed)
 are filtered out at every layer, so they never appear as shows.
 
-**The `/api/events` function deploys automatically** with the site on
-Cloudflare Pages — anything in the `functions/` directory becomes a Pages
-Function with zero config. After your next deploy, confirm it works:
+### Deployment — Cloudflare Worker with static assets
+
+This project deploys as a **Cloudflare Worker with static assets**
+(configured in `wrangler.jsonc`):
+
+- The **assets layer** serves every static file (HTML/CSS/JS/images/fonts)
+  directly — those requests never reach the Worker script.
+- The **Worker entry** (`worker/index.js`) runs only for paths with no
+  matching static file, which is exactly where the dynamic `/api/events`
+  route lives. Everything else falls through to `env.ASSETS`.
+- `.assetsignore` keeps source files (`worker/`, `wrangler.jsonc`, the
+  README, etc.) from being served publicly.
+
+Because assets are served *before* the Worker, normal pages stay up even if
+the Worker has an issue — only `/api/events` would be affected.
+
+After the next deploy (push to the production branch), confirm the endpoint:
 
 ```sh
 curl -s https://coconutcovesurfcity.com/api/events | head -c 400
 ```
 
 You should get JSON like `{"events":[{"title":"…","startAt":"…"}],"source":"google-ics"}`.
+If it 404s, check **Workers & Pages → coconut-cove-website → Settings →
+Build** and make sure the production branch is `main` (where `wrangler.jsonc`
+and `worker/` live).
 
-> **Note:** if your project is deployed as a plain **Worker** (not Pages),
-> the `functions/` convention doesn't apply and `/api/events` will 404 — the
-> site still works via the CORS-proxy fallback, but for full reliability
-> either switch to a Pages project or port `functions/api/events.js` into
-> the Worker. Ask and we'll wire it up.
-
-**Optional — even more bulletproof (Google Calendar API key):** the function
-needs no key, but if you ever want the browser-direct API path too, create a
-read-only **Google Calendar API** key in <https://console.cloud.google.com>
-and the data layer can use it. Not required; the Pages Function already
-covers reliability.
+**Optional — even more bulletproof (Google Calendar API key):** the Worker
+needs no key. If you ever want a browser-direct API path too, create a
+read-only **Google Calendar API** key in <https://console.cloud.google.com>;
+the client data layer can use it. Not required — the Worker already covers
+reliability.
 
 ### Contact form
 
@@ -176,10 +187,14 @@ coconut-cove-website/
 ├── robots.txt
 ├── README.md
 ├── .gitignore
-├── functions/
-│   └── api/
-│       └── events.js           # Cloudflare Pages Function: server-side
-│                               #   Google Calendar fetch + 12h edge cache
+├── wrangler.jsonc              # Cloudflare Worker config (static assets
+│                               #   + /api/events route)
+├── .assetsignore               # Files NOT served as public assets
+├── worker/
+│   ├── index.js                # Worker entry: routes /api/events,
+│   │                           #   delegates everything else to assets
+│   └── events-core.js          # Server-side Google Calendar fetch,
+│                               #   parse, "Busy" filter + 12h edge cache
 └── assets/
     ├── css/
     │   └── styles.css          # All styles, one file

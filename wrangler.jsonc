@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "coconut-cove-website",
+  "compatibility_date": "2026-06-08",
+  "compatibility_flags": ["nodejs_compat"],
+  // Worker entry — handles only /api/events (the dynamic calendar
+  // endpoint). Everything else is served by the static-assets layer
+  // below, which runs FIRST, so normal pages never hit this script.
+  "main": "worker/index.js",
+  "assets": {
+    "directory": ".",
+    "binding": "ASSETS"
+  },
+  "observability": {
+    "enabled": true
+  }
+}

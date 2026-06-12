@@ -1,0 +1,10 @@
+# Files in the repo root that should NOT be served as public static
+# assets by the Worker. (Patterns are gitignore-style.)
+.assetsignore
+.gitignore
+README.md
+wrangler.jsonc
+worker
+functions
+.claude
+_design_source

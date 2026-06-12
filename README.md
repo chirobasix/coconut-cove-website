@@ -94,21 +94,52 @@ about 10 seconds.
 
 ## Optional config
 
-### Live Music — Google Calendar API key
+### Live Music calendar — how it loads (and why it's reliable)
 
-`assets/js/live-music.js` syncs with the public Google Calendar at
-`coconutcovesurfcity@gmail.com`. Out of the box it uses public CORS proxies
-to read the calendar's `.ics` feed — fine for previews, less reliable in
-production.
+The Live Music page and the home-page "Live on the Lanai" snippet both pull
+from the **public** Coconut Cove Google Calendar (`coconutcovesurfcity@gmail.com`).
+All the data logic lives in one shared file: **`assets/js/calendar-data.js`**
+(`window.CCCalendar.getEvents()`). The page scripts only render.
 
-For a faster, more stable production setup:
+**Load order (no fake/placeholder events — ever):**
 
-1. Go to <https://console.cloud.google.com> → create a project.
-2. Enable the **Google Calendar API**.
-3. Create an **API key**, restricted to the Calendar API (read-only).
-4. Open `assets/js/live-music.js`, find `GCAL_API_KEY = ''`, paste the key.
+1. **Fresh browser cache** (`localStorage`, < 12h old) → renders instantly,
+   then quietly refreshes in the background for next time.
+2. **`/api/events`** — a Cloudflare Pages Function
+   (`functions/api/events.js`) that fetches Google's `.ics` feed
+   **server-side** (no CORS problem) and caches it at Cloudflare's edge for
+   **12 hours**. This is the primary, reliable path.
+3. **Public CORS proxies** — legacy fallback. Still **real** data, only used
+   if `/api/events` is somehow unreachable.
+4. **Stale browser cache** (any age) → last-known-good real events if the
+   network is fully down.
+5. **Honest empty state** — "see the full calendar" / "no shows on the
+   books". **Never fake bands.**
 
-The page will automatically prefer the direct API path once the key is set.
+Private calendar entries (which Google exposes as `Busy` in the public feed)
+are filtered out at every layer, so they never appear as shows.
+
+**The `/api/events` function deploys automatically** with the site on
+Cloudflare Pages — anything in the `functions/` directory becomes a Pages
+Function with zero config. After your next deploy, confirm it works:
+
+```sh
+curl -s https://coconutcovesurfcity.com/api/events | head -c 400
+```
+
+You should get JSON like `{"events":[{"title":"…","startAt":"…"}],"source":"google-ics"}`.
+
+> **Note:** if your project is deployed as a plain **Worker** (not Pages),
+> the `functions/` convention doesn't apply and `/api/events` will 404 — the
+> site still works via the CORS-proxy fallback, but for full reliability
+> either switch to a Pages project or port `functions/api/events.js` into
+> the Worker. Ask and we'll wire it up.
+
+**Optional — even more bulletproof (Google Calendar API key):** the function
+needs no key, but if you ever want the browser-direct API path too, create a
+read-only **Google Calendar API** key in <https://console.cloud.google.com>
+and the data layer can use it. Not required; the Pages Function already
+covers reliability.
 
 ### Contact form
 
@@ -145,15 +176,22 @@ coconut-cove-website/
 ├── robots.txt
 ├── README.md
 ├── .gitignore
+├── functions/
+│   └── api/
+│       └── events.js           # Cloudflare Pages Function: server-side
+│                               #   Google Calendar fetch + 12h edge cache
 └── assets/
     ├── css/
     │   └── styles.css          # All styles, one file
     ├── js/
-    │   ├── site.js             # Nav, modal, mobile menu (loaded on every page)
+    │   ├── site.js             # Nav + mobile menu (every page)
     │   ├── menu.js             # Lunch/Dinner toggle
-    │   ├── visit.js            # Contact form mailto handler
-    │   └── live-music.js       # Calendar render + Google Calendar sync
-    ├── fonts/                  # Warung Kopi, Sunday April
+    │   ├── visit.js            # Contact form (Web3Forms)
+    │   ├── calendar-data.js    # Shared calendar data layer (fetch +
+    │   │                       #   12h localStorage cache + Busy filter)
+    │   ├── live-music.js       # Live Music page renderer
+    │   └── home-music.js       # Home "Live on the Lanai" snippet renderer
+    ├── fonts/                  # Warung Kopi, Sunday April, Montserrat
     ├── images/                 # Logos, decorative drinks
     └── photos/                 # Restaurant photography
 ```
